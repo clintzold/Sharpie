@@ -12,25 +12,28 @@ public class TextBufferTests
     private readonly TextBuffer _buffer = new TextBuffer();
 
     [Fact]
-    public void Initializes_WithProperFieldValues()
+    public void Creates_NewLineAbove_WhenCursorIsAt_BeginningOfLine()
     {
+      string secondLine = "This will become the second line.";
+      _buffer.Lines = [secondLine];
 
-      Assert.Equal(0, _buffer.CursorY);
-      Assert.Equal(0, _buffer.CursorX);
+      _buffer.InsertEnter();
+
       Assert.Equal("", _buffer.Lines[0]);
+      Assert.Equal(secondLine, _buffer.Lines[1]);
     }
 
     [Fact]
-    public void LinesSetter_AddsStringsAsLines()
+    public void Creates_NewLine_Above_WhenCursorIsAt_EndOfLine()
     {
-      string firstLine = "This is the first line.";
-      string secondLine = "This is the second line.";
+      _buffer.Lines = ["First Line"];
+      _buffer.CursorX = 10;
 
-      _buffer.Lines = [firstLine];
-      _buffer.Lines.Add(secondLine);
+      _buffer.InsertEnter();
 
-      Assert.Equal(firstLine, _buffer.Lines[0]);
-      Assert.Equal(secondLine, _buffer.Lines[1]);
+      Assert.Equal(2, _buffer.Lines.Count);
+      Assert.Equal("First Line", _buffer.Lines[0]);
+      Assert.Equal("", _buffer.Lines[1]);
     }
 
     [Fact]

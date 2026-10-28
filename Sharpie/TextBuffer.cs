@@ -1,3 +1,4 @@
+// TextBuffer.cs
 namespace Sharpie;
 
 public class TextBuffer

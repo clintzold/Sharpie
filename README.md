@@ -10,7 +10,7 @@ popular terminal text editors such as **nano** and **vim**.
 The reason I am building this tool is two-fold:
   - to get my hands dirty with C#
   - to get my hands even **dirtier** playing with lower-level programming(experience that the average web development
-  project doesn't provide).
+  project doesn't provide)
 
 ### Specs
 
