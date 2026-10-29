@@ -22,6 +22,7 @@ public class TextBuffer
   public void InsertChar(string input)
   {
     Lines[CursorY] = Lines[CursorY].Insert(CursorX, input);
+    CursorX++;
   }
 
   public void Backspace()
@@ -33,5 +34,38 @@ public class TextBuffer
       Lines[CursorY] = Lines[CursorY].Remove(indexToRemove, 1);
       CursorX--;
     }
+  }
+
+  public void MoveCursorLeft()
+  {
+    bool positionGreaterThanZero = CursorX > 0;
+
+    if (positionGreaterThanZero)
+      CursorX--;
+  }
+
+  public void MoveCursorRight()
+  {
+    int lineLength = Lines[CursorY].Length;
+    bool atLastPosition = CursorX == lineLength - 1;
+
+    if (!atLastPosition)
+      CursorX++;
+  }
+
+  public void MoveCursorDown()
+  {
+    bool atLastPosition = CursorY == Lines.Count - 1;
+
+    if (!atLastPosition)
+      CursorY++;
+  }
+
+  public void MoveCursorUp()
+  {
+    bool atFirstPosition = CursorY == 0;
+
+    if (!atFirstPosition)
+      CursorY--;
   }
 }
