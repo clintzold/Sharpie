@@ -165,4 +165,15 @@ public class KeyboardListenerTests
     Assert.Equal(1, buffer.CursorX);
     Assert.Equal(0, buffer.CursorY);
   }
+  [Fact]
+  public void Listen_TabKeyInsertsTwoEmptySpaces()
+  {
+    var fakeKeys = new[] { new ConsoleKeyInfo('\0', ConsoleKey.Tab, false, false, false) };
+    var fakeInput = new FakeKeyboardInput(fakeKeys);
+    var listener = new KeyboardListener(fakeInput, buffer);
+
+    listener.Listen();
+
+    Assert.Equal(2, buffer.Lines[0].Length);
+  }
 }

@@ -3,15 +3,15 @@ namespace Sharpie;
 
 public class TextBuffer
 {
-  public List<string> Lines { get; set; } = new() { "" };
+  public List<string> Lines { get; set; } = new([""]);
   public int CursorY { get; set; } = 0;
   public int CursorX { get; set; } = 0;
 
   public void InsertEnter()
   {
     string currentLine = Lines[CursorY];
-    string leftSide = currentLine.Substring(0, CursorX);
-    string rightSide = currentLine.Substring(CursorX);
+    string leftSide = currentLine[..CursorX];
+    string rightSide = currentLine[CursorX..];
 
     Lines[CursorY] = leftSide;
     Lines.Insert(CursorY + 1, rightSide);
@@ -37,12 +37,15 @@ public class TextBuffer
     else if (indexToRemove < 0 && CursorY > 0)
     {
       string currentLine = Lines[CursorY];
+
       // Merge previous and current lines into previous line
       string newLine = Lines[CursorY - 1] + currentLine;
       Lines[CursorY - 1] = newLine;
+
       // Remove current line from list
       Lines.RemoveAt(CursorY);
-      // Reset cursor coords to index of the join
+
+      // Reset cursor coordinates to index of the join
       CursorY--;
       CursorX = newLine.Length - currentLine.Length;
     }
