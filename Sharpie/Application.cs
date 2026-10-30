@@ -11,11 +11,11 @@ public class Application
     KeyboardListener listener = new(keyboardInput, textBuffer);
     Renderer renderer = new(textBuffer);
 
-    while (true)
+    while (listener.IsRunning)
     {
-      listener.Listen();
-
       renderer.Render();
+
+      listener.Listen();
     }
   }
 }

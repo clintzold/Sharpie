@@ -36,14 +36,15 @@ public class TextBuffer
     }
     else if (indexToRemove < 0 && CursorY > 0)
     {
+      string currentLine = Lines[CursorY];
       // Merge previous and current lines into previous line
-      string newLine = Lines[CursorY - 1] + Lines[CursorY];
+      string newLine = Lines[CursorY - 1] + currentLine;
       Lines[CursorY - 1] = newLine;
       // Remove current line from list
       Lines.RemoveAt(CursorY);
-      // Reset cursor coords at end of the new line
+      // Reset cursor coords to index of the join
       CursorY--;
-      CursorX = newLine.Length - 1;
+      CursorX = newLine.Length - currentLine.Length;
     }
   }
 
@@ -58,7 +59,7 @@ public class TextBuffer
   public void MoveCursorRight()
   {
     int lineLength = Lines[CursorY].Length;
-    bool atLastPosition = CursorX == lineLength - 1;
+    bool atLastPosition = CursorX == lineLength;
 
     if (!atLastPosition)
       CursorX++;

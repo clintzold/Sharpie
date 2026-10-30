@@ -105,14 +105,14 @@ public class TextBufferTests
     }
 
     [Fact]
-    public void JoinsCurrentLineTo_PreviousLine_WhenXIsZero()
+    public void JoinsCurrentLineTo_PreviousLine_WhenCursorXIsZero()
     {
       _buffer.Lines = ["xxx", "aaa"];
       _buffer.CursorY = 1;
 
       _buffer.Backspace();
 
-      Assert.Equal(5, _buffer.CursorX);
+      Assert.Equal(3, _buffer.CursorX);
       Assert.Equal(0, _buffer.CursorY);
       Assert.Equal("xxxaaa", _buffer.Lines[0]);
     }
@@ -161,14 +161,15 @@ public class TextBufferTests
     }
 
     [Fact]
-    public void CursorPositionCannotBe_GreaterThanLineIndex()
+    public void CursorPositionCannotBe_GreaterThanLine_IndexPlusOne()
     {
       _buffer.Lines = ["xxx"];
       _buffer.CursorX = 2;
 
       _buffer.MoveCursorRight();
+      _buffer.MoveCursorRight();
 
-      Assert.Equal(2, _buffer.CursorX);
+      Assert.Equal(3, _buffer.CursorX);
     }
   }
 
