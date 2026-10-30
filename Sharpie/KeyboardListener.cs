@@ -3,6 +3,12 @@ namespace Sharpie;
 
 public class KeyboardListener(IKeyboardInput input, TextBuffer buffer)
 {
+  private static readonly char[] _specialKeys = [
+    '\0',
+    '\r',
+    '\b',
+    '\x1b'
+  ];
   public bool IsRunning { get; private set; } = true;
 
   public void Listen()
@@ -14,12 +20,9 @@ public class KeyboardListener(IKeyboardInput input, TextBuffer buffer)
 
   private void ProcessKey(ConsoleKeyInfo keyInfo)
   {
-    bool isModifierKey = keyInfo.KeyChar == '\0';
-    bool isEnterKey = keyInfo.KeyChar == '\r';
-    bool isBackspace = keyInfo.Key == ConsoleKey.Backspace;
-    bool isEscapeKey = keyInfo.Key == ConsoleKey.Escape;
+    bool isSpecialKey = Array.Exists(_specialKeys, k => k == keyInfo.KeyChar);
 
-    if (isModifierKey || isEnterKey || isEscapeKey || isBackspace)
+    if (isSpecialKey)
     {
       switch (keyInfo.Key)
       {

@@ -13,6 +13,7 @@ public class KeyboardListenerTests
   {
     // Load the array of mock key presses into the queue
     private readonly Queue<ConsoleKeyInfo> _keys = new(keys);
+    public bool HasKeys { get; private set; } = true;
 
     // Use dequeue instead of manual typing
     public ConsoleKeyInfo ReadKey()
@@ -22,23 +23,25 @@ public class KeyboardListenerTests
         return _keys.Dequeue();
       }
 
+      HasKeys = false;
       return new ConsoleKeyInfo('\0', ConsoleKey.Escape, false, false, false);
     }
   }
 
   [Fact]
-  public void Listen_WhenEscapeKeyIsPressed_StopsListening()
+  public void Listen_WhenEscapeKeyIsPressed_IsRunning_BecomesFalse()
   {
     var fakeKeys = new[]
     {
-      new ConsoleKeyInfo('\0', ConsoleKey.Escape, false, false, false),
-      new ConsoleKeyInfo('\r', ConsoleKey.Enter, false, false, false)
+      new ConsoleKeyInfo('\x1b', ConsoleKey.Escape, false, false, false),
     };
 
     var fakeInput = new FakeKeyboardInput(fakeKeys);
     var listener = new KeyboardListener(fakeInput, buffer);
 
-    Assert.Equal(0, listener.EnterCount);
+    listener.Listen();
+
+    Assert.False(listener.IsRunning);
   }
 
   [Fact]
@@ -56,7 +59,10 @@ public class KeyboardListenerTests
     var fakeInput = new FakeKeyboardInput(fakeKeys);
     var listener = new KeyboardListener(fakeInput, buffer);
 
-    listener.Listen();
+    while (fakeInput.HasKeys)
+    {
+      listener.Listen();
+    }
 
     Assert.Equal(5, buffer.Lines[0].Length);
   }
@@ -76,7 +82,10 @@ public class KeyboardListenerTests
     var fakeInput = new FakeKeyboardInput(fakeKeys);
     var listener = new KeyboardListener(fakeInput, buffer);
 
-    listener.Listen();
+    while (fakeInput.HasKeys)
+    {
+      listener.Listen();
+    }
 
     Assert.Equal(5, buffer.Lines[0].Length);
   }
@@ -102,7 +111,10 @@ public class KeyboardListenerTests
     var fakeInput = new FakeKeyboardInput(fakeKeys);
     var listener = new KeyboardListener(fakeInput, buffer);
 
-    listener.Listen();
+    while (fakeInput.HasKeys)
+    {
+      listener.Listen();
+    }
 
     Assert.Equal(11, buffer.Lines[0].Length);
     Assert.Equal("hello world", buffer.Lines[0]);
@@ -121,7 +133,10 @@ public class KeyboardListenerTests
     var fakeInput = new FakeKeyboardInput(modifierKeys);
     var listener = new KeyboardListener(fakeInput, buffer);
 
-    listener.Listen();
+    while (fakeInput.HasKeys)
+    {
+      listener.Listen();
+    }
 
     Assert.Equal(2, buffer.Lines.Count);
   }
@@ -142,7 +157,10 @@ public class KeyboardListenerTests
     var fakeInput = new FakeKeyboardInput(arrowKeys);
     var listener = new KeyboardListener(fakeInput, buffer);
 
-    listener.Listen();
+    while (fakeInput.HasKeys)
+    {
+      listener.Listen();
+    }
 
     Assert.Equal(1, buffer.CursorX);
     Assert.Equal(0, buffer.CursorY);
