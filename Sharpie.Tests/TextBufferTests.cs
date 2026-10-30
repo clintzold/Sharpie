@@ -93,18 +93,28 @@ public class TextBufferTests
     }
 
     [Fact]
-    public void MovesCursor_BackOnePosition_UnlessAtFirstPosition()
+    public void MovesCursor_BackOnePosition()
     {
       _buffer.Lines = ["xxx"];
       _buffer.CursorX = 1;
 
       _buffer.Backspace();
-      _buffer.Backspace();
-      _buffer.Backspace();
-      _buffer.Backspace();
 
       Assert.Equal(2, _buffer.Lines[0].Length);
       Assert.Equal(0, _buffer.CursorX);
+    }
+
+    [Fact]
+    public void JoinsCurrentLineTo_PreviousLine_WhenXIsZero()
+    {
+      _buffer.Lines = ["xxx", "aaa"];
+      _buffer.CursorY = 1;
+
+      _buffer.Backspace();
+
+      Assert.Equal(5, _buffer.CursorX);
+      Assert.Equal(0, _buffer.CursorY);
+      Assert.Equal("xxxaaa", _buffer.Lines[0]);
     }
   }
 

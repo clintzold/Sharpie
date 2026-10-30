@@ -34,6 +34,17 @@ public class TextBuffer
       Lines[CursorY] = Lines[CursorY].Remove(indexToRemove, 1);
       CursorX--;
     }
+    else if (indexToRemove < 0 && CursorY > 0)
+    {
+      // Merge previous and current lines into previous line
+      string newLine = Lines[CursorY - 1] + Lines[CursorY];
+      Lines[CursorY - 1] = newLine;
+      // Remove current line from list
+      Lines.RemoveAt(CursorY);
+      // Reset cursor coords at end of the new line
+      CursorY--;
+      CursorX = newLine.Length - 1;
+    }
   }
 
   public void MoveCursorLeft()
