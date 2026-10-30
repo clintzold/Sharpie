@@ -42,23 +42,6 @@ public class KeyboardListenerTests
   }
 
   [Fact]
-  public void Listen_WhenEnterKeyIsPressed_IncrementsEnterCount()
-  {
-    var fakeKeys = new[]
-    {
-      new ConsoleKeyInfo('\r', ConsoleKey.Enter, false, false, false),
-      new ConsoleKeyInfo('\r', ConsoleKey.Enter, false, false, false)
-    };
-
-    var fakeInput = new FakeKeyboardInput(fakeKeys);
-    var listener = new KeyboardListener(fakeInput, buffer);
-
-    listener.Listen();
-
-    Assert.Equal(2, listener.EnterCount);
-  }
-
-  [Fact]
   public void Listen_WhenLettersArePressed_AddsThemToCurrentLine()
   {
     var fakeKeys = new[]
@@ -141,5 +124,27 @@ public class KeyboardListenerTests
     listener.Listen();
 
     Assert.Equal(2, buffer.Lines.Count);
+  }
+
+  [Fact]
+  public void Listen_MovesCursorIn2DimensionsWhen_ArrowKeysArePressed()
+  {
+    var arrowKeys = new[]
+    {
+      new ConsoleKeyInfo('\0', ConsoleKey.DownArrow, false, false, false),
+      new ConsoleKeyInfo('\0', ConsoleKey.RightArrow, false, false, false),
+      new ConsoleKeyInfo('\0', ConsoleKey.RightArrow, false, false, false),
+      new ConsoleKeyInfo('\0', ConsoleKey.UpArrow, false, false, false),
+      new ConsoleKeyInfo('\0', ConsoleKey.LeftArrow, false, false, false)
+    };
+    buffer.Lines = ["First Line", "Second Line"];
+
+    var fakeInput = new FakeKeyboardInput(arrowKeys);
+    var listener = new KeyboardListener(fakeInput, buffer);
+
+    listener.Listen();
+
+    Assert.Equal(1, buffer.CursorX);
+    Assert.Equal(0, buffer.CursorY);
   }
 }

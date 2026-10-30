@@ -3,41 +3,50 @@ namespace Sharpie;
 
 public class KeyboardListener(IKeyboardInput input, TextBuffer buffer)
 {
-  public int EnterCount { get; private set; }
+  public bool IsRunning { get; private set; } = true;
 
   public void Listen()
   {
-    while (true)
-    {
-      ConsoleKeyInfo keyInfo = input.ReadKey();
+    ConsoleKeyInfo keyInfo = input.ReadKey();
 
-      if (keyInfo.Key == ConsoleKey.Escape)
-      {
-        break;
-      }
-      ProcessKey(keyInfo);
-    }
+    ProcessKey(keyInfo);
   }
 
   private void ProcessKey(ConsoleKeyInfo keyInfo)
   {
     bool isModifierKey = keyInfo.KeyChar == '\0';
+    bool isEnterKey = keyInfo.KeyChar == '\r';
+    bool isBackspace = keyInfo.Key == ConsoleKey.Backspace;
+    bool isEscapeKey = keyInfo.Key == ConsoleKey.Escape;
 
-    if (isModifierKey)
+    if (isModifierKey || isEnterKey || isEscapeKey || isBackspace)
     {
       switch (keyInfo.Key)
       {
+        case ConsoleKey.Escape:
+          IsRunning = false;
+          break;
         case ConsoleKey.Enter:
-          EnterCount++;
           buffer.InsertEnter();
           break;
         case ConsoleKey.Backspace:
           buffer.Backspace();
           break;
+        case ConsoleKey.UpArrow:
+          buffer.MoveCursorUp();
+          break;
+        case ConsoleKey.DownArrow:
+          buffer.MoveCursorDown();
+          break;
+        case ConsoleKey.LeftArrow:
+          buffer.MoveCursorLeft();
+          break;
+        case ConsoleKey.RightArrow:
+          buffer.MoveCursorRight();
+          break;
         default:
           break;
       }
-
     }
     else
     {
