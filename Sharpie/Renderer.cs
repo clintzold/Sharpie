@@ -15,7 +15,7 @@ public class Renderer(TextBuffer _buffer)
     Console.Write("\x1b[2J");
 
     // Position the cursor for writing the string
-    Console.SetCursorPosition(0, 0);
+    Console.Write("\x1b[H");
 
     // Build the string from enumerable List
     for (int y = 0; y < _buffer.Lines.Count; y++)
@@ -31,6 +31,6 @@ public class Renderer(TextBuffer _buffer)
 
     Console.Write(_stringBuilder.ToString());
 
-    Console.SetCursorPosition(_buffer.CursorX, _buffer.CursorY);
+    Console.Write($"\x1b[{_buffer.CursorY + 1};{_buffer.CursorX + 1}H");
   }
 }

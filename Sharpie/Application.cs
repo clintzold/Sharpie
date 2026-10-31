@@ -22,6 +22,6 @@ public class Application
     }
 
     // Restore main screen buffer on exit
-    Console.Write("\x1b[?1049l;");
+    Console.Write("\x1b[?1049l");
   }
 }
