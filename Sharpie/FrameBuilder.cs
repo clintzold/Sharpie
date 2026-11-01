@@ -150,5 +150,4 @@ public class FrameBuilder(TextBuffer _buffer, int _frameWidth, int _frameHeight)
         + "\u256F\r\n"
         );
   }
-
 }

@@ -73,7 +73,20 @@ public class TextBuffer
     bool atLastPosition = CursorY == Lines.Count - 1;
 
     if (!atLastPosition)
-      CursorY++;
+    {
+      int currentLineLength = Lines[CursorY].Length;
+      int nextLineLength = Lines[CursorY + 1].Length;
+
+      if (currentLineLength <= nextLineLength)
+      {
+        CursorY++;
+      }
+      else
+      {
+        CursorX = nextLineLength - 1;
+        CursorY++;
+      }
+    }
   }
 
   public void MoveCursorUp()
@@ -81,7 +94,20 @@ public class TextBuffer
     bool atFirstPosition = CursorY == 0;
 
     if (!atFirstPosition)
-      CursorY--;
+    {
+      int currentLineLength = Lines[CursorY].Length;
+      int nextLineLength = Lines[CursorY - 1].Length;
+
+      if (currentLineLength <= nextLineLength)
+      {
+        CursorY--;
+      }
+      else
+      {
+        CursorX = nextLineLength - 1;
+        CursorY--;
+      }
+    }
   }
 
   public async Task ReadFileAsync(string filePath)
