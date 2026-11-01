@@ -83,4 +83,15 @@ public class TextBuffer
     if (!atFirstPosition)
       CursorY--;
   }
+
+  public async Task ReadFileAsync(string filePath)
+  {
+    Lines.Clear();
+    Lines.AddRange(await File.ReadAllLinesAsync(filePath));
+  }
+
+  public async Task SaveFileAsync(string filePath)
+  {
+    await File.WriteAllLinesAsync(filePath, Lines);
+  }
 }

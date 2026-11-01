@@ -56,12 +56,13 @@ public class FrameBuilder
         );
 
     // Title line
-    string xPadding = new(' ', (width / 2) - (_title.Length / 2) - 1);
+    string leftPadding = new(' ', (width / 2) - (_title.Length / 2) - 1);
+    string rightPadding = (_title.Length % 2 == 0) ? leftPadding : leftPadding[..(leftPadding.Length - 1)];
     _sb.Append(
         "\u2502"
-        + xPadding
+        + leftPadding
         + $"\x1b[4m{_title}\x1b[0m"
-        + xPadding
+        + rightPadding
         + "\u2502\r\n"
         );
 
@@ -115,12 +116,14 @@ public class FrameBuilder
 
     // Title line
     string footerString = "Esc => Quit";
-    string xPadding = new(' ', (width / 2) - (footerString.Length / 2) - 1);
+    string leftPadding = new(' ', (width / 2) - (footerString.Length / 2) - 1);
+    string rightPadding = (footerString.Length % 2 == 0) ? leftPadding : leftPadding[..(leftPadding.Length - 1)];
+
     _sb.Append(
         "\u2502"
-        + xPadding
+        + leftPadding
         + footerString
-        + xPadding
+        + rightPadding
         + "\u2502\r\n"
         );
 

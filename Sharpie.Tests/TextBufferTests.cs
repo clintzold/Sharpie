@@ -226,4 +226,41 @@ public class TextBufferTests
       Assert.Equal(0, _buffer.CursorY);
     }
   }
+
+  public class ListFromFileMethod
+  {
+    private readonly TextBuffer _buffer = new();
+    private readonly string _filePath = "test-file.txt";
+
+    [Fact]
+    public async Task ConvertsFileIntoList()
+    {
+      string content = "First Line\nSecond Line\nThird Line";
+      await File.WriteAllTextAsync(_filePath, content);
+
+      await _buffer.ReadFileAsync(_filePath);
+
+      Assert.Equal(3, _buffer.Lines.Count);
+
+      File.Delete(_filePath);
+    }
+  }
+
+  public class FileToListMethod
+  {
+    private readonly TextBuffer _buffer = new();
+    private readonly string _filePath = "test-file.txt";
+
+    [Fact]
+    public async Task SaveFileAsync_WritesAFileToDisk()
+    {
+      _buffer.Lines = ["First Line", "Second Line", "Third Line"];
+
+      await _buffer.SaveFileAsync(_filePath);
+
+      Assert.Equal(["First Line", "Second Line", "Third Line"], File.ReadLines(_filePath));
+
+      File.Delete(_filePath);
+    }
+  }
 }
