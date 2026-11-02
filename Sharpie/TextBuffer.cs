@@ -74,10 +74,9 @@ public class TextBuffer
 
     if (!atLastPosition)
     {
-      int currentLineLength = Lines[CursorY].Length;
       int nextLineLength = Lines[CursorY + 1].Length;
 
-      if (currentLineLength <= nextLineLength)
+      if (CursorX < nextLineLength)
       {
         CursorY++;
       }
@@ -95,10 +94,9 @@ public class TextBuffer
 
     if (!atFirstPosition)
     {
-      int currentLineLength = Lines[CursorY].Length;
       int nextLineLength = Lines[CursorY - 1].Length;
 
-      if (currentLineLength <= nextLineLength)
+      if (CursorX < nextLineLength)
       {
         CursorY--;
       }
