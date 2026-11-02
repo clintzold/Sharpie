@@ -34,7 +34,7 @@ public class TextBuffer
       Lines[CursorY] = Lines[CursorY].Remove(indexToRemove, 1);
       CursorX--;
     }
-    else if (indexToRemove < 0 && CursorY > 0)
+    else if (indexToRemove < 0 && CursorY > 0)  // Handle backspace at first X position(join current line to previous)
     {
       string currentLine = Lines[CursorY];
 
